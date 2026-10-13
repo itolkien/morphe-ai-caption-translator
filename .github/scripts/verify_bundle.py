@@ -9,17 +9,15 @@ with zipfile.ZipFile(p) as z:
     assert "extensions/extension.mpe" in z.namelist(), "missing extension"
     assert not any(n.startswith("validation/") for n in z.namelist()), "test harness leaked into bundle"
     mf=z.read("META-INF/MANIFEST.MF").decode().replace("\r\n ","").replace("\n ","")
-    assert "YYDarlinker/morphe-ai-caption-translator" in mf, "wrong repository identity"
+    assert "YYDarlinker/morphe-ai-caption-translator" in mf or "itolkien/morphe-ai-caption-translator" in mf, "wrong repository identity"
     assert "YYDarlinker/morphe-ai-captions\n" not in mf
     assert f"Version: {v}\n" in mf.replace("\r\n", "\n"), "wrong version"
     dex=z.read("extensions/extension.mpe")
     assert dex.startswith(b"dex\n"), "Morphe extension must be raw DEX"
     assert int.from_bytes(dex[32:36],"little")==len(dex), "extension DEX length mismatch"
     assert b"NativeCaptionBridge" in dex
-    if tuple(map(int,v.split("-")[0].split("."))) >= (1,3,5):
-        assert b"RebuildController" in dex and b"CaptionDiagnosticArchive" in dex
-    else:
-        assert b"AnchoredCaptionPlan" in dex
+    # The fork starts a new semantic version series but retains the current R2 engine.
+    assert b"RebuildController" in dex and b"CaptionDiagnosticArchive" in dex, "missing current caption engine"
     assert b"SemanticLedgerCaptionController" not in dex and b"LocalDisplaySliceFallback" not in dex
     if tuple(map(int,v.split("-")[0].split("."))) >= (1,2,0):
         assert b"RememberedCaptionSelection" in dex and b"CaptionQuickToggle" in dex
