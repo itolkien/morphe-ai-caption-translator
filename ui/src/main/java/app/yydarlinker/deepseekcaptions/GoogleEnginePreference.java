@@ -22,7 +22,7 @@ public final class GoogleEnginePreference extends CaptionSettingPreference {
             .setSingleChoiceItems(new String[]{"AI provider (API key)","Google Translate (experimental, unofficial endpoint)"},selected(c)?1:0,
                 (dialog,which)->{
                     c.getSharedPreferences(PREFS,0).edit().putString(KEY,which==1?"google":"ai").apply();
-                    refresh();dialog.dismiss();CaptionActions.configuration();
+                    refresh();dialog.dismiss();CaptionActions.refreshConfiguration(c);
                 }).setNegativeButton(android.R.string.cancel,null).show();
     }
 }
