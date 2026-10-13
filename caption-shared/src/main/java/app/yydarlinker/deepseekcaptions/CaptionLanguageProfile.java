@@ -39,7 +39,7 @@ final class CaptionLanguageProfile {
     p.put("ko",new CaptionLanguageProfile("ko",Direction.LTR,ReadingCounter.VISIBLE_GRAPHEME,LineCounter.KOREAN_WIDTH,12,16));
     p.put("en",latin("en",20));
     p.put("th",new CaptionLanguageProfile("th",Direction.LTR,ReadingCounter.VISIBLE_GRAPHEME,LineCounter.GRAPHEME,17,35));
-    for(String id:new String[]{"es","fr","de","pt","ru","vi","id"}) p.put(id,latin(id,17));
+    for(String id:new String[]{"es","fr","de","pt","ru","vi","id","tr"}) p.put(id,latin(id,17));
     p.put("ar",new CaptionLanguageProfile("ar",Direction.RTL,ReadingCounter.VISIBLE_GRAPHEME,LineCounter.GRAPHEME,20,42));
     p.put("hi",latin("hi",22));
     PROFILES=Collections.unmodifiableMap(p);
