@@ -17,6 +17,7 @@ final class GoogleTranslationPlan {
             CaptionLanguageContext language,
             DeepSeekApiClient.RequestControl control) throws Exception {
         JSONArray events = new JSONArray();
+        java.util.List<RebuildProtocol.Event> timed = new java.util.ArrayList<>();
         for (RebuildSource.TimedWindow window : source.windows()) {
             if (window.to < block.from || window.from > block.to) continue;
             int from = Math.max(block.from, window.from);
@@ -26,12 +27,17 @@ final class GoogleTranslationPlan {
             String original = source.text(from, to);
             String translated = GoogleTranslateClient.translate(
                     original, language.sourceCode, language.targetCode, control);
+            RebuildSource.Word first = source.words.get(from);
+            RebuildSource.Word last = source.words.get(to);
+            timed.add(new RebuildProtocol.Event(from,to,first.start,last.end,translated));
             events.put(new JSONObject()
                 .put("from",from).put("to",to)
                 .put("source",original).put("text",translated));
         }
         if (events.length() == 0) throw new RebuildProtocol.Invalid("empty_google_translation");
         String json = new JSONObject().put("block",block.id()).put("events",events).toString();
-        return RebuildProtocol.parseBound(json, source, block, language);
+        // Google provides plain text, not an AI-generated source ownership protocol.
+        // Avoid model-only fidelity/segmentation validators while keeping source-owned times.
+        return new RebuildProtocol.Plan(timed, json);
     }
 }
