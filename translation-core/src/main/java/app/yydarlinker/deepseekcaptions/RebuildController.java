@@ -1367,6 +1367,7 @@ final class RebuildController {
     try {
       job.slotWaitMs = SystemClock.elapsedRealtime() - job.queuedAt;
       TranslationSourceAccess.checkActive(job);
+      if(accepted==null && s.config.google) accepted = GoogleTranslationPlan.translate(s.source,b,job.languageContext,job);
       if(accepted==null) accepted =
           RebuildApi.translate(
               s.source, b, s.config, s.target, job, job.priority, s.reasons[job.index],job.languageContext);
