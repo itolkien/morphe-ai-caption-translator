@@ -2,7 +2,9 @@
 
 **Translate YouTube subtitles in real time using your own OpenAI-compatible API.** This independent, open-source patch bundle works with Morphe and adds configurable captions to regular videos, full-screen playback and Shorts.
 
-[中文说明](docs/README.zh-CN.md) · [Add to Morphe](https://morphe.software/add-source?github=YYDarlinker/morphe-ai-caption-translator) · [Releases](https://github.com/YYDarlinker/morphe-ai-caption-translator/releases) · [Report a problem](https://github.com/YYDarlinker/morphe-ai-caption-translator/issues)
+[中文说明](docs/README.zh-CN.md) · [Add Turkish fork to Morphe](https://morphe.software/add-source?github=itolkien/morphe-ai-caption-translator) · [Fork releases](https://github.com/itolkien/morphe-ai-caption-translator/releases) · [Original project](https://github.com/YYDarlinker/morphe-ai-caption-translator) · [Report a problem](https://github.com/itolkien/morphe-ai-caption-translator/issues)
+
+> **Turkish fork:** Adds Turkish (`tr`) to the **Automatic translation languages** selection and its language profiles. Based on the original project by YYDarlinker. **Important:** The one-click remote source will only work once this fork publishes its own `.mpp` release and updates `patches-bundle.json` to point to that release. Until then, download the successful build artifact from [GitHub Actions](https://github.com/itolkien/morphe-ai-caption-translator/actions/workflows/validate.yml) and add the `.mpp` locally in Morphe Manager.
 
 ## What it does
 
@@ -29,7 +31,7 @@ The recommended combination is **official 1.47.0 + YouTube 21.20.405**. YouTube 
 ## Install
 
 1. Install [Morphe Manager](https://github.com/MorpheApp/morphe-manager/releases/latest) and enable **Expert mode** in its settings.
-2. [Add Anchored AI Captions to Morphe](https://morphe.software/add-source?github=YYDarlinker/morphe-ai-caption-translator). Alternatively, add the repository URL `https://github.com/YYDarlinker/morphe-ai-caption-translator` under **Patch sources → Add → Remote**.
+2. **Turkish fork:** Once a fork release is published, use [Add Turkish fork to Morphe](https://morphe.software/add-source?github=itolkien/morphe-ai-caption-translator) or add `https://github.com/itolkien/morphe-ai-caption-translator` under **Patch sources → Add → Remote**. **Until then**, download the `.mpp` from a successful [validation workflow artifact](https://github.com/itolkien/morphe-ai-caption-translator/actions/workflows/validate.yml), unzip it and add it under **Patch sources → Add → Local**.
 3. Select an **original, unpatched YouTube APK** from the supported versions above. Prefer 21.20.405.
 4. Keep the compatible official default patch selection, including its captions/settings/player support. In this source’s tab, select **AI caption translator**. Select **Remember caption selection** only if you want it.
 5. Let Morphe patch, sign and install the app. Follow Morphe’s GmsCore instructions if your selected official patches require it.
