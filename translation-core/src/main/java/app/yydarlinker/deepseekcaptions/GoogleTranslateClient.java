@@ -77,6 +77,9 @@ final class GoogleTranslateClient {
     static String normalizedLanguage(String value, String fallback) {
         if (value == null || value.trim().isEmpty()) return fallback;
         String code = value.trim().replace('_', '-');
+        if ("UNKNOWN".equalsIgnoreCase(code) || "und".equalsIgnoreCase(code)) return fallback;
+        if ("zh-Hans".equalsIgnoreCase(code)) return "zh-CN";
+        if ("zh-Hant".equalsIgnoreCase(code)) return "zh-TW";
         if (!code.matches("[a-zA-Z]{2,8}(?:-[a-zA-Z0-9]{2,8})?"))
             throw new IllegalArgumentException("invalid_language_code");
         return code;
