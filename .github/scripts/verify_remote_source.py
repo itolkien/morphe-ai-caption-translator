@@ -2,7 +2,7 @@
 import hashlib, io, json, os, re, sys, time, urllib.request, zipfile
 from pathlib import Path
 from datetime import datetime
-repo="YYDarlinker/morphe-ai-caption-translator"
+repo=os.environ.get("GITHUB_REPOSITORY", "itolkien/morphe-ai-caption-translator")
 branch=sys.argv[1] if len(sys.argv)>1 else "main"
 expected=sys.argv[2] if len(sys.argv)>2 else None
 out=Path(sys.argv[3]) if len(sys.argv)>3 else None
@@ -27,9 +27,7 @@ v=manifest["version"]
 assert re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?",manifest["created_at"])
 assert datetime.fromisoformat(manifest["created_at"]).tzinfo is None
 assert manifest["download_url"]==f"https://github.com/{repo}/releases/download/v{v}/patches-{v}.mpp"
-expected_names={"AI caption translator"}
-if tuple(map(int,v.split("-")[0].split("."))) >= (1,2,0):
-    expected_names.update({"Remember caption selection"})
+expected_names={"AI caption translator", "Remember caption selection"}
 assert listing["version"]==v and {p["name"] for p in listing["patches"]}==expected_names
 assert len(listing["patches"])==len(expected_names)
 changelog=get(base+"/CHANGELOG.md?check="+str(time.time_ns())).decode("utf-8")
@@ -48,10 +46,7 @@ with zipfile.ZipFile(io.BytesIO(body)) as z:
     dex=z.read("extensions/extension.mpe")
     assert dex.startswith(b"dex\n") and int.from_bytes(dex[32:36],"little")==len(dex)
     assert b"NativeCaptionBridge" in dex
-    if tuple(map(int,v.split("-")[0].split("."))) >= (1,3,5):
-        assert b"RebuildController" in dex and b"CaptionDiagnosticArchive" in dex
-    else:
-        assert b"AnchoredCaptionPlan" in dex
+    assert b"RebuildController" in dex and b"CaptionDiagnosticArchive" in dex
     assert b"SemanticLedgerCaptionController" not in dex and b"LocalDisplaySliceFallback" not in dex
 
 report={"branch":branch,"version":v,"manifest_http":200,"asset_http":200,"patch_count":len(listing["patches"]),"bytes":len(body),"sha256":hashlib.sha256(body).hexdigest(),"manager_dto_valid":True,"root_dex":True,"extension_valid":True,"legacy_engines_absent":True}
