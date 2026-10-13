@@ -52,6 +52,13 @@ def inspect(source_only=False):
                 original=b'"ru","vi"'
                 if data.count(added)!=1 or sha(data.replace(added,original))!=row['sha256']:
                     errors.append('unexpected UI modification (Turkish allowlist): '+row['path'])
+            elif row['path']=='ui/src/main/java/app/yydarlinker/deepseekcaptions/CaptionQuickToggle.java':
+                # Precisely scoped keyless-provider credential-gate change; all other code stays identical.
+                data=target.read_bytes()
+                altered=b'if(enabled && !GoogleEnginePreference.selected(context) && !DeepSeekConfig.load(context).hasCredential)'
+                original=b'if(enabled && !DeepSeekConfig.load(context).hasCredential)'
+                if data.count(altered)!=1 or sha(data.replace(altered,original))!=row['sha256']:
+                    errors.append('unexpected UI modification (Google credential gate): '+row['path'])
             elif sha(target.read_bytes())!=row['sha256']:
                 errors.append('latest UI/localization changed: '+row['path'])
             protected.append(row['path'])
