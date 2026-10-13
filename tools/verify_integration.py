@@ -42,7 +42,18 @@ def inspect(source_only=False):
     protected=[]
     for row in entry['files']:
         if '/captionlocales/' in row['path'] or row['path'].startswith('localization/') or row['path'].startswith('ui/src/') and not row['path'].endswith(('CaptionOverlayV2.java','CaptionActions.java')):
-            if not (R/row['path']).exists() or sha((R/row['path']).read_bytes())!=row['sha256']:errors.append('latest UI/localization changed: '+row['path'])
+            target=R/row['path']
+            if not target.exists():
+                errors.append('latest UI/localization missing: '+row['path'])
+            elif row['path']=='ui/src/main/java/app/yydarlinker/deepseekcaptions/CaptionLanguageSelection.java':
+                # Scoped fork customization: allow ONLY the addition of Turkish to CODES.
+                data=target.read_bytes()
+                added=b'"ru","tr","vi"'
+                original=b'"ru","vi"'
+                if data.count(added)!=1 or sha(data.replace(added,original))!=row['sha256']:
+                    errors.append('unexpected UI modification (Turkish allowlist): '+row['path'])
+            elif sha(target.read_bytes())!=row['sha256']:
+                errors.append('latest UI/localization changed: '+row['path'])
             protected.append(row['path'])
     facts['latest_ui_localization_exact_files']=len(protected)
     for row in provenance.get('protected_abi',[]):
