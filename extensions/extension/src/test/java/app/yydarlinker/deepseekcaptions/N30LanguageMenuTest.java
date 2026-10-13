@@ -29,9 +29,9 @@ public class N30LanguageMenuTest {
   a.getSharedPreferences(CaptionLanguageSelection.STORE,0).edit().clear().commit();DeepSeekConfig.saveEnabled(a,false);RememberedCaptionSelection.reset();}
  @After public void after(){a.finish();}
  @Test public void emptyByDefaultPersistsCanonicalCodesAndRejectsWrongStorage(){
-  assertTrue(CaptionLanguageSelection.read(a).isEmpty());assertEquals(14,CaptionLanguageSelection.CODES.size());
-  CaptionLanguageSelection.save(a,Arrays.asList("zh_CN","zh-Hans","fr-CA","fr","in-ID","en-US"));
-  assertEquals(Arrays.asList("en","fr","id","zh-Hans"),new ArrayList<>(CaptionLanguageSelection.read(a)));
+  assertTrue(CaptionLanguageSelection.read(a).isEmpty());assertEquals(15,CaptionLanguageSelection.CODES.size());
+  CaptionLanguageSelection.save(a,Arrays.asList("zh_CN","zh-Hans","fr-CA","fr","in-ID","en-US","tr-TR"));
+  assertEquals(Arrays.asList("en","fr","id","tr","zh-Hans"),new ArrayList<>(CaptionLanguageSelection.read(a)));
   assertFalse(DeepSeekConfig.enabled(a));assertEquals(-1,RememberedCaptionSelection.decision());
   try{CaptionLanguageSelection.save(a,Arrays.asList("French"));fail();}catch(IllegalArgumentException expected){assertEquals("unsupported_language_code",expected.getMessage());}
   a.getSharedPreferences(CaptionLanguageSelection.STORE,0).edit().putStringSet(CaptionLanguageSelection.KEY,new HashSet<>(Arrays.asList("bad-code"))).commit();
