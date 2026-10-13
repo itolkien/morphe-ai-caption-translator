@@ -24,7 +24,8 @@ jobs:
         run: |
           python3 tools/check_localization.py
           python3 .github/scripts/test_release_contract.py
-          python3 .github/scripts/validate_morphe_metadata.py "$(jq -r .version patches-bundle.json)"
+          # The fork has no published release yet; validate against the inherited upstream release metadata.
+          GITHUB_REPOSITORY=YYDarlinker/morphe-ai-caption-translator python3 .github/scripts/validate_morphe_metadata.py "$(jq -r .version patches-bundle.json)"
       - name: Test and build current source (no publication)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
