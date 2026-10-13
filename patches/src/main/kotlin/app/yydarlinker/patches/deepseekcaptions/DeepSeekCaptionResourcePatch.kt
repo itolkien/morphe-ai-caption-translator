@@ -212,6 +212,13 @@ internal val deepSeekCaptionResourcePatch = resourcePatch(
             )
 
             screen.addPreference(
+                "app.yydarlinker.deepseekcaptions.GoogleEnginePreference",
+                "deepseek_caption_engine",
+                "Translation engine",
+                "AI or experimental Google Translate",
+            )
+
+            screen.addPreference(
                 "app.yydarlinker.deepseekcaptions.CaptionLanguagesPreference",
                 "deepseek_caption_languages",
                 "自动翻译语言",
