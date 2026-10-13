@@ -35,7 +35,17 @@ def inspect(source_only=False):
     provenance=json.loads((R/'docs/core-provenance.json').read_text(encoding='utf-8'))
     for row in provenance['files']:
         if sha((R/row['snapshot']).read_bytes())!=row['upstream_sha256']:errors.append('changed pinned snapshot: '+row['snapshot'])
-        if sha((R/row['destination']).read_bytes())!=row['sha256']:errors.append('unrecorded core adaptation: '+row['destination'])
+        destination=R/row['destination']
+        if row['destination']=='translation-core/src/main/java/app/yydarlinker/deepseekcaptions/RebuildController.java':
+            # Fork-only provider dispatch, with the exact original pinned source restored for checksum.
+            data=destination.read_bytes()
+            modified=b'if(accepted==null && s.config.google) accepted = GoogleTranslationPlan.translate(s.source,b,job.languageContext,job);\\n      '
+            # The repository file uses a literal LF for the inserted line.
+            modified=modified.replace(b'\\n',b'\n')
+            if data.count(modified)!=1 or sha(data.replace(modified,b''))!=row['sha256']:
+                errors.append('unrecorded core adaptation: '+row['destination'])
+        elif sha(destination.read_bytes())!=row['sha256']:
+            errors.append('unrecorded core adaptation: '+row['destination'])
     for row in provenance.get('new_files',[]):
         if sha((R/row['path']).read_bytes())!=row['sha256']:errors.append('unrecorded core adapter: '+row['path'])
     entry=json.loads((R/'docs/ui-preservation.json').read_text(encoding='utf-8'))
