@@ -7,10 +7,10 @@ patches {
     about {
         name = "Anchored AI Captions"
         description = "Real-time multilingual YouTube captions through a user-provided OpenAI-compatible API"
-        source = "https://github.com/YYDarlinker/morphe-ai-caption-translator"
+        source = "https://github.com/itolkien/morphe-ai-caption-translator"
         author = "YYDarlinker"
-        contact = "https://github.com/YYDarlinker/morphe-ai-caption-translator/issues"
-        website = "https://github.com/YYDarlinker/morphe-ai-caption-translator"
+        contact = "https://github.com/itolkien/morphe-ai-caption-translator/issues"
+        website = "https://github.com/itolkien/morphe-ai-caption-translator"
         license = "GPLv3"
     }
 }
