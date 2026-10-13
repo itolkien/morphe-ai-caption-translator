@@ -28,7 +28,7 @@ jobs:
       - name: Validate current Morphe metadata
         run: |
           current="$(jq -r '.version // empty' patches-bundle.json)"
-          GITHUB_REPOSITORY=YYDarlinker/morphe-ai-caption-translator python3 .github/scripts/validate_morphe_metadata.py "$current"
+          python3 .github/scripts/validate_morphe_metadata.py "$current"
 
       - name: Identify source version
         id: source
