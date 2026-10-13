@@ -1,3 +1,12 @@
+## [1.0.1](https://github.com/itolkien/morphe-ai-caption-translator/compare/v1.0.0...v1.0.1) (2026-10-13)
+
+### 🐛 Bug Fixes
+
+* preserve Google source timings without applying AI-specific protocol checks ([4bc36d4](https://github.com/itolkien/morphe-ai-caption-translator/commit/4bc36d432adade82bc10e7e19ca3fc6662b2f442))
+* verify fork remote source and current engine independent of reset version ([ab6d267](https://github.com/itolkien/morphe-ai-caption-translator/commit/ab6d26723fbf47b58993ab463571dbc59d392884))
+* verify published fork metadata rather than upstream repository ([47851a7](https://github.com/itolkien/morphe-ai-caption-translator/commit/47851a774253a557e9dc429ec50658c1dc4a9b81))
+* verify release contract against fork repository after first published release ([5708db5](https://github.com/itolkien/morphe-ai-caption-translator/commit/5708db51dee2a87e17f426e4ef14b6b0c56548fc))
+
 ## [1.0.0] (Fork release)
 
 - Turkish language support and experimental keyless Google Translate provider.
