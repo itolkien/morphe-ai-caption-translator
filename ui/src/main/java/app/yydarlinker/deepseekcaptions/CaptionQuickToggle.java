@@ -43,7 +43,7 @@ public final class CaptionQuickToggle {
     }
     public static android.widget.LinearLayout nativeContainer(Object panel){return null;}
     static boolean setEngine(Context context,boolean enabled){
-        if(enabled && !DeepSeekConfig.load(context).hasCredential){Toast.makeText(context,CaptionStrings.settings(context,"configure_api"),Toast.LENGTH_LONG).show();return false;}
+        if(enabled && !GoogleEnginePreference.selected(context) && !DeepSeekConfig.load(context).hasCredential){Toast.makeText(context,CaptionStrings.settings(context,"configure_api"),Toast.LENGTH_LONG).show();return false;}
         boolean previous=DeepSeekConfig.enabled(context);
         // Saving the user's mode is independent of an ephemeral native player/track reference.
         // In particular, OFF must never be rolled back to ON by a stale Shorts manager.

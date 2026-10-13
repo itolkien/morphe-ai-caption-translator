@@ -35,7 +35,17 @@ def inspect(source_only=False):
     provenance=json.loads((R/'docs/core-provenance.json').read_text(encoding='utf-8'))
     for row in provenance['files']:
         if sha((R/row['snapshot']).read_bytes())!=row['upstream_sha256']:errors.append('changed pinned snapshot: '+row['snapshot'])
-        if sha((R/row['destination']).read_bytes())!=row['sha256']:errors.append('unrecorded core adaptation: '+row['destination'])
+        destination=R/row['destination']
+        if row['destination']=='translation-core/src/main/java/app/yydarlinker/deepseekcaptions/RebuildController.java':
+            # Fork-only provider dispatch, with the exact original pinned source restored for checksum.
+            data=destination.read_bytes()
+            modified=b'if(accepted==null && s.config.google) accepted = GoogleTranslationPlan.translate(s.source,b,job.languageContext,job);\\n      '
+            # The repository file uses a literal LF for the inserted line.
+            modified=modified.replace(b'\\n',b'\n')
+            if data.count(modified)!=1 or sha(data.replace(modified,b''))!=row['sha256']:
+                errors.append('unrecorded core adaptation: '+row['destination'])
+        elif sha(destination.read_bytes())!=row['sha256']:
+            errors.append('unrecorded core adaptation: '+row['destination'])
     for row in provenance.get('new_files',[]):
         if sha((R/row['path']).read_bytes())!=row['sha256']:errors.append('unrecorded core adapter: '+row['path'])
     entry=json.loads((R/'docs/ui-preservation.json').read_text(encoding='utf-8'))
@@ -52,6 +62,13 @@ def inspect(source_only=False):
                 original=b'"ru","vi"'
                 if data.count(added)!=1 or sha(data.replace(added,original))!=row['sha256']:
                     errors.append('unexpected UI modification (Turkish allowlist): '+row['path'])
+            elif row['path']=='ui/src/main/java/app/yydarlinker/deepseekcaptions/CaptionQuickToggle.java':
+                # Precisely scoped keyless-provider credential-gate change; all other code stays identical.
+                data=target.read_bytes()
+                altered=b'if(enabled && !GoogleEnginePreference.selected(context) && !DeepSeekConfig.load(context).hasCredential)'
+                original=b'if(enabled && !DeepSeekConfig.load(context).hasCredential)'
+                if data.count(altered)!=1 or sha(data.replace(altered,original))!=row['sha256']:
+                    errors.append('unexpected UI modification (Google credential gate): '+row['path'])
             elif sha(target.read_bytes())!=row['sha256']:
                 errors.append('latest UI/localization changed: '+row['path'])
             protected.append(row['path'])

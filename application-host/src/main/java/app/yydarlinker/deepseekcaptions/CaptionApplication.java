@@ -89,7 +89,7 @@ final class CaptionApplication extends TranslationRuntime.Host implements Captio
     }
     @Override TranslationSettings settings(Context c){
         synchronized(ApiProfiles.LOCK){DeepSeekConfig.ProviderSettings p=DeepSeekConfig.load(c);
-            return new TranslationSettings(p.enabled,p.baseUrl,p.model,p.prompt,SecureApiKey.load(c),p.preferenceProvenance);}
+            return new TranslationSettings(p.enabled,p.baseUrl,p.model,p.prompt,SecureApiKey.load(c),p.preferenceProvenance, GoogleEnginePreference.selected(c));}
     }
     private static TranslationSourceAccess.Source adapt(RawCaptionSource.Source source){
         return source==null?null:new TranslationSourceAccess.Source(source.body,source.document,source.timingProfile,source.timingQuality,source.timingEvidence);
