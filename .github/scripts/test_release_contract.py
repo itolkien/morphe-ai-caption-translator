@@ -14,7 +14,7 @@ class ReleaseContractTest(unittest.TestCase):
             if mutate: mutate(data)
             (dst/"patches-bundle.json").write_text(json.dumps(data),encoding="utf-8")
             if mutate_files: mutate_files(dst)
-            env=dict(os.environ,GITHUB_REPOSITORY="YYDarlinker/morphe-ai-caption-translator")
+            env=dict(os.environ,GITHUB_REPOSITORY="itolkien/morphe-ai-caption-translator")
             return subprocess.run([sys.executable,str(SCRIPT),version],cwd=dst,env=env,capture_output=True).returncode
     def test_current_contract(self): self.assertEqual(0,self.validate())
     def test_reject_duplicate_patch_names(self):
