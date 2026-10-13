@@ -4,7 +4,7 @@ import java.util.*;
 /** UI-language-independent, bounded target codes. Never touches target intent, Remember or API profiles. */
 final class CaptionLanguageSelection {
     static final String STORE="caption_language_menu", KEY="selected_codes";
-    static final List<String> CODES=Collections.unmodifiableList(Arrays.asList("ar","de","en","es","fr","hi","id","ja","ko","pt","ru","vi","zh-Hans","zh-Hant"));
+    static final List<String> CODES=Collections.unmodifiableList(Arrays.asList("ar","de","en","es","fr","hi","id","ja","ko","pt","ru","tr","vi","zh-Hans","zh-Hant"));
     static String canonical(String raw) {
         CaptionLanguageProfile p=CaptionLanguageProfile.fromCode(raw);
         return p==CaptionLanguageProfile.GENERIC||!CODES.contains(p.id)?"":p.id;
